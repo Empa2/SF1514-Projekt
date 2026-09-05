@@ -10,7 +10,6 @@ def trapets(
     integral: float = 0
     h = (stop-start)/subinterval
 
-
     for i in range(subinterval):
         x = start + i*h
         x_next = x + h

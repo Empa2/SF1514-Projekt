@@ -1,18 +1,4 @@
-from collections.abc import Callable, Iterator
-from convergence import iterate_until_convergence
-
-
-def fixedpoint_iterator(
-    f: Callable[[float], float],
-    x0: float
-) -> Iterator[float]:
-
-    x = x0
-    yield x
-
-    while True:
-        x = f(x)
-        yield x
+from collections.abc import Callable
 
 
 def fixedpoint(
@@ -22,9 +8,14 @@ def fixedpoint(
     tolerance: float
 ) -> float:
 
-    iterator = fixedpoint_iterator(f, x0)
-    x = next(iterator)
+    x = x0
 
-    return iterate_until_convergence(
-        iterator, x, max_iter, tolerance
-    )
+    for _ in range(max_iter):
+        x_next = f(x)
+
+        if abs(x_next - x) < tolerance:
+            return x_next
+
+        x = x_next
+
+    return x
