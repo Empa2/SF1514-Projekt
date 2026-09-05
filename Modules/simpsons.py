@@ -13,7 +13,6 @@ def simpsons(
     integral: float = 0
     h = (stop-start)/subinterval
 
-
     for i in range(subinterval+1):
         if i == 0 or i == subinterval:
             weight = 1
