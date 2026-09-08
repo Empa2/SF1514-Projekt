@@ -20,7 +20,6 @@ def simpsons(
             weight = 2
         else:
             weight = 4
-        print(i, weight)
         x = start + i*h
         integral += f(x)*weight
 

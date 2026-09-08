@@ -1,5 +1,6 @@
 from collections.abc import Callable
-from diff import differentiate
+import numpy as np
+from diff import (differentiate, jacobian)
 
 
 def newton(
@@ -25,3 +26,22 @@ def newton(
         x = x_next
 
     return x
+
+
+def gauss_newton(F, X, max_iter, tolerance):
+    for i in range(max_iter):
+
+        j = jacobian(F, X)
+        residual = F(X)
+
+        delta = np.linalg.solve(
+            j.T @ j,
+            -j.T @ residual
+        )
+
+        X = X + delta
+
+        if np.linalg.norm(delta) < tolerance:
+            break
+
+    return X
