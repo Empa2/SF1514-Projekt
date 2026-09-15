@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-y = np.loadtxt("SF1514-Projekt/data/KPI.csv", delimiter=",", skiprows=3, usecols=1)
+y = np.loadtxt("data/KPI.csv", delimiter=",", skiprows=3, usecols=1)
 t = np.arange(y.size) / 12
 #plt.figure(0)
 #plt.plot(t + 1980, y)
@@ -106,7 +106,7 @@ while np.linalg.norm(delta) > tol and i < max_iter:
     i += 1
     print(i, X, np.linalg.norm(delta))
 
-print(f"d0 = {X[0]}\nd1 = {X[1]}\nd2 = {X[2]}\nd3 = {X[3]}\nL = {X[4]}")
+print(f"c0 = {X[0]}\nc1 = {X[1]}\nc2 = {X[2]}\nc3 = {X[3]}\nL = {X[4]}")
 print(f"R_EMS (c): {E_RMS(f_c(t, X), y)}")
 
 plt.figure(5)
@@ -116,6 +116,5 @@ plt.plot(t + 1980, f_c(t, X))
 plt.figure(6)
 plt.plot(t + 1980, modellfel(f_c(t, X), y))
 
-
-#2d 
+#2d
 plt.show()

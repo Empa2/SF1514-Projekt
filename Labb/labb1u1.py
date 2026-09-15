@@ -6,7 +6,7 @@ def f(x, L=1):
 
 def df(x, L=1):
     return 8/(3*L) - 6*x/L**2 + 1/L*(x/L)**2 - (2*np.pi)/(3*L)*np.cos(np.pi*x/L)
- 
+
 def g(x, L=1):
     return 3*L/8  * (3*(x/L)**2 - 1/3*(x/L)**3 + 2/3*np.sin(np.pi*x/L))
 
@@ -94,7 +94,7 @@ newton_metod(f, df, 0.7, 1e-10, 1000)
 # Använd logaritimsik skala på y-axeln (plt.semilogy-lot)
 x_guess = 0.7
 x_fix, fix_diff = fixpunkt_metod(g, x_guess, 1e-10, 1000, False)
-x_newton, newton_diff= newton_metod(f, df, x_guess, 1e-10, 1000, False)
+x_newton, newton_diff = newton_metod(f, df, x_guess, 1e-10, 1000, False)
 print(f"fixpunkt konvergerar mot: {x_fix}")
 print(f"Newton konvergerar mot: {x_newton}")
 plt.figure(3)
