@@ -153,7 +153,7 @@ print("Effekten under 2023 överstinger 100kW"
       if exp_func(2023) > 100
       else "Effekten under 2023 överstinger INTE 100kW")
 
-print(f"Ttotala mängden energi under 2014 - 2023: {trapets_data(f_2, 1)}")
+print(f"Totala mängden energi under 2014 - 2023: {trapets_data(f_2, 1)}")
 print("Totala mängden energi under 2014 - 2023 överstiger 350 kWår"
       if trapets_data(f_2, 1) > 350
       else "Totala mängden energi under 2014 - 2023 överstiger INTE 350 kWår")
