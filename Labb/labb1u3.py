@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import integrate
+
 # 3a 
 print("3a")
 function = lambda x: x**3 * np.exp(x)
-
+I_exact = 6 + 2*np.exp(2)
 # Trapetsregeln
 # h = (b-a)/N 
 # I ≈ h * ∑ (f(x_i) + f(x_i+1)))/2
@@ -22,6 +22,8 @@ def trapets(f, subinterval, interval):
     return h * integral
 
 print(trapets(function, 100, np.array([0, 2])))
+print(f"e_h = {np.abs(I_exact
+                      - trapets(function, 100, np.array([0, 2])))}")
 
 # 3b
 # Konvergens:
@@ -40,7 +42,6 @@ print(trapets(function, 100, np.array([0, 2])))
 # Simpson: 16
 
 print("3b")
-I_exact = 6 + 2*np.exp(2)
 for j in range(10):
     N = 2**(j + 1)
     error_h = np.abs(I_exact - trapets(function, N, np.array([0, 2])))
@@ -122,7 +123,7 @@ def simpsons_data(f, h):
 S = simpsons_data(f, 1)
 print("Simpsons", S)
 
-#3g.
+#3f.
 # f(t) = a*e^(b*(t-2014))
 # ln f(t) =  ln(a) + b*(t-2014)
 # Linjär ersättningsmodell
@@ -141,9 +142,21 @@ c = np.linalg.solve(A.T @ A, A.T @ y)
 
 print(f"a: {np.exp(c[0])}, b: {c[1]}")
 
-#3f
+#3g
 def exp_func(t):
     return np.exp(c[0]) * np.exp(c[1] * (t-2014))
 
 f_2 = np.append(f, exp_func(2023))
-print(trapets_data(f_2, 1))
+
+print(f"\nEffekten under 2023: {exp_func(2023)}")
+print("Effekten under 2023 överstinger 100kW"
+      if exp_func(2023) > 100
+      else "Effekten under 2023 överstinger INTE 100kW")
+
+print(f"Ttotala mängden energi under 2014 - 2023: {trapets_data(f_2, 1)}")
+print("Totala mängden energi under 2014 - 2023 överstiger 350 kWår"
+      if trapets_data(f_2, 1) > 350
+      else "Totala mängden energi under 2014 - 2023 överstiger INTE 350 kWår")
+print("\nProjektet anses lyckat" if
+      trapets_data(f_2, 1) > 350 or exp_func(2023) > 100 else
+      "\nProjektet anses inte som lyckat")

@@ -11,7 +11,7 @@ def g(x, L=1):
     return 3*L/8  * (3*(x/L)**2 - 1/3*(x/L)**3 + 2/3*np.sin(np.pi*x/L))
 
 def dg(x, L=1):
-    return 3*L/8 * (6*x/L**2 - 1/L*(x/L)**2 + 2*np.pi/(3*L)*np.cos(np.pi*x/L))  
+    return 3*L/8 * (6*x/L**2 - 1/L*(x/L)**2 + 2*np.pi/(3*L)*np.cos(np.pi*x/L))
 
 def plot_function(func ,start, stop, num, label=None):
     x = np.linspace(start, stop, num)
@@ -91,7 +91,7 @@ fixpunkt_metod(g, 0.5, 1e-10, 1000)
 # 1d. Använd newton metoden för att hitta ett nollställe på intervall
 # 0 < x < L, (L=1), Denna kan dock konvergera mot 0 och 1, vid vissa start värden
 print("Newton metod")
-newton_metod(f, df, 0.7, 1e-10, 1000)
+newton_metod(f, df, 0.3, 1e-10, 1000)
 
 #1e. Plotta differansen mellan fixpunkt och newton, med samma start gissning
 # Använd logaritimsik skala på y-axeln (plt.semilogy-lot)
