@@ -1,82 +1,72 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# 1)
+# Newton metod för att bestämma f(x), intervall -2 <= x <= 0
+# Tolerance 1e-8
+
 def f(x):
     return np.sin(x) + x**2 - 1
 
 def df(x):
     return np.cos(x) + 2*x
 
+def newton(xf, xdf, x0, tol, mi):
+    for _ in range(mi):
+        x = x0 - xf(x0) / xdf(x0)
+        diff = np.abs(x-x0)
+        if diff < tol:
+            return x
+        x0 = x
+    print("Max iterations uppnått")
 
-def newton_metod(func, derivata, x, tolerance, max_iteration, should_print = True):
-    i = 1
-    diff = []
-    x_next = x - func(x)/derivata(x)
-    diff.append(np.abs(x_next - x))
-    if should_print:
-        print(i, x_next, x, diff[-1])
+print(f"1: {newton(f, df, -1, 1e-8, 100)}")
 
-    while np.abs(x_next - x) >= tolerance and i < max_iteration:
-        x = x_next
-        x_next = x - func(x)/derivata(x)
-        diff.append(np.abs(x_next - x))
-        if should_print:
-            print(i+1, x_next, x, diff[-1])
-        i += 1
+# Kolla |g'(x*) < 1|
+# Vid x* = 1
+input("Fortsätt till uppgift 2: [Enter]: ")
 
-    return x_next, diff
+def dg(x, a):
+    return 2*x + a
 
-n = newton_metod(f, df, -1, 1e-8, 100)[0]
-print(n)
+a = np.array([-3.5, -2.5, -0.5, 0, 0.5, 2.5, 3.5])
+for i, k in enumerate(a):
+    print(i, k,
+          np.abs(dg(1, k)),end=" ")
+    print("konvergens" if np.abs(dg(1, k)) < 1
+          else "divergense")
 
-
-
-########
+input("Fortsätt till uppgift 3: [Enter]: ")
 
 t = np.array((0, 2, 4, 6, 8))
 y = np.array((0, 1.5, 5, 7.9, 12))
 
-
-A = np.column_stack((np.ones(len(t)), t, t**2))
-print(A)
-# (A^T * A)c = A^T * y
+A = np.column_stack((
+    np.ones(len(t)),
+    t,
+    t**2
+))
 c = np.linalg.solve(A.T @ A, A.T @ y)
-f = A @ c
+f3 = A @ c
 
-print(c)
+print(np.sqrt(1 / len(f3) * np.sum((f3 - y)**2)))
 
-# plt.plot(t,y)
-# plt.show()
+input("Fortsätt till uppgift 5: [Enter]: ")
 
-def E_RMS(f, y):
-    summa = 0
-    lengt = len(y)
-    for i in range(lengt):
-        summa += (f[i] - y[i])**2
-    return np.sqrt(summa/lengt)
-print("E_RMS")
-print(E_RMS(f, y))
-
-# Minsta kvadrat mening för att lösa parametrarna a, b i f(t) = ae^(b*(t-2014))
-# ln f(t) =  ln a + b(t-2014)
-# Linjär ersättningsmodell y = ln(f(t)), c0 = ln a, c1 = b
-
-tl = np.array([
+t5 = np.array([
     2014, 2015, 2016, 2017, 2018,
     2019, 2020, 2021, 2022
 ])
-
-fl = np.array([
+y5 = np.array([
     12.00, 15.10, 19.01, 23.92, 30.11,
     37.90, 47.70, 60.03, 75.56
 ])
-
-A = np.column_stack((np.ones(len(tl)), tl-2014))
-yl = np.log(fl / (tl-2000))
-c = np.linalg.solve(A.T @ A, A.T @ yl)
-print(np.exp(c[0]), c[1])
-
-def fxLA(t, c):
-    return np.exp(c[0])*(t-2000) * np.exp(c[1]*(t-2014))
-
-print(fxLA(2023, c))
+B = np.column_stack((
+    np.ones(len(t5)),
+    t5-2014
+))
+y5ln = np.log(y5 / (t5-2000))
+d = np.linalg.solve(B.T @ B, B.T @ y5ln)
+print(np.exp(d[0]), d[1])
+ft = lambda t: np.exp(d[0])*(t-2000) * np.exp(d[1] * (t-2014))
+print(ft(2023))

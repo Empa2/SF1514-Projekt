@@ -18,6 +18,9 @@ def plot_function(func ,start, stop, num, label=None):
     y = func(x)
     plt.plot(x, y, label=label)
 
+# Fixpunkt x = g(x):
+# Lokal konvergens mot x* om |g'(x*)| < 1
+# |g'(x*)| > 1 => divergerar lokalt
 def fixpunkt_metod(func, x, tolerance, max_iteration, should_print = True):
     i = 1
     diff = []

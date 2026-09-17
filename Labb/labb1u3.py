@@ -1,9 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy import integrate
 # 3a 
 print("3a")
 function = lambda x: x**3 * np.exp(x)
+
+# Trapetsregeln
+# h = (b-a)/N 
+# I ≈ h * ∑ (f(x_i) + f(x_i+1)))/2
+# Noggranhetsordning: p = 2
 
 def trapets(f, subinterval, interval):
     integral = 0
@@ -19,6 +24,21 @@ def trapets(f, subinterval, interval):
 print(trapets(function, 100, np.array([0, 2])))
 
 # 3b
+# Konvergens:
+# e_h ≈ C*h**p
+# p = log(e_h/e_h2) / log(2)
+#
+# I loglog-plot av FEL mot STEGLÄNGD h:
+# lutning = p
+#
+# Trapets: p = 2
+# Simpson: p = 4
+#
+# Om h halveras:
+# e_h / e_(h/2) ≈ 2^p
+# Trapets: 4
+# Simpson: 16
+
 print("3b")
 I_exact = 6 + 2*np.exp(2)
 for j in range(10):
@@ -39,6 +59,8 @@ f = np.array([
     37.90, 47.70, 60.03, 75.56
 ])
 
+# Trapetsregeln för tabellvärden
+# h = antal år mellan datapunkter (=1 här)
 h = (t[-1] - t[0]) / (len(t) - 1)
 
 def trapets_data(f, h):
@@ -68,9 +90,23 @@ print("p1", p1)
 print("p2", p2)
 
 #3e
+# Richardsonsextrapolation
+#
+# Trapets:
+# T_h = I + C*h^2
+#
+# Rihcardson tar bort h^2 felet:
+# I = (4*T_h - T_2h) / 3
+# Ger ordninen p = 4
 I_richardson = (4*T1 - T2) / 3
 print("richardson", I_richardson)
 
+
+# Simpsons Regel
+# 
+# Vikter:
+# 1 4 2 4 2 ... 4 1
+# Ger ordning p = 4
 def simpsons_data(f, h):
     integral = 0
     for i, _ in enumerate(f):
@@ -87,9 +123,17 @@ S = simpsons_data(f, 1)
 print("Simpsons", S)
 
 #3g.
-# Minsta kvadrat mening för att lösa parametrarna a, b i f(t) = ae^(b*(t-2014))
-# ln f(t) =  ln a + b(t-2014)
-# Linjär ersättningsmodell y = ln(f(t)), c0 = ln a, c1 = b
+# f(t) = a*e^(b*(t-2014))
+# ln f(t) =  ln(a) + b*(t-2014)
+# Linjär ersättningsmodell
+# y = ln(f)
+# c0 = ln(a)
+# c1 = b
+
+# lös A.T @ A)c = A.T @ y
+#
+# a = exp(c0)
+# b = c1
 
 A = np.column_stack((np.ones(len(t)), t-2014))
 y = np.log(f)
