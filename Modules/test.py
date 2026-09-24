@@ -1,30 +1,29 @@
+def _quad_simpsons_mem(f, a, fa, b, fb):
+    """Evaluates the Simpson's Rule, also returning m and f(m) to reuse"""
+    m = (a + b) / 2
+    fm = f(m)
+    return (m, fm, abs(b - a) / 6 * (fa + 4 * fm + fb))
+
+def _quad_asr(f, a, fa, b, fb, eps, whole, m, fm):
+    """
+    Efficient recursive implementation of adaptive Simpson's rule.
+    Function values at the start, middle, end of the intervals are retained.
+    """
+    lm, flm, left  = _quad_simpsons_mem(f, a, fa, m, fm)
+    rm, frm, right = _quad_simpsons_mem(f, m, fm, b, fb)
+    delta = left + right - whole
+    if abs(delta) <= 15 * eps:
+        return left + right + delta / 15
+    return _quad_asr(f, a, fa, m, fm, eps/2, left , lm, flm) +\
+           _quad_asr(f, m, fm, b, fb, eps/2, right, rm, frm)
+
+def quad_asr(f, a, b, eps):
+    """Integrate f from a to b using Adaptive Simpson's Rule with max error of eps."""
+    fa, fb = f(a), f(b)
+    m, fm, whole = _quad_simpsons_mem(f, a, fa, b, fb)
+    return _quad_asr(f, a, fa, b, fb, eps, whole, m, fm)
+
 import numpy as np
-
-F = lambda x, y: np.array([
-    x ** 2 - y + 1,
-    2 * x ** 2 + y**2 - 8 
-])
-
-J = lambda x, y: np.array([
-    [2*x, -1],
-    [4*x, 2*y]
-])
-
-X = np.array([1, 2], dtype=float)
-
-tol = 1e-10
-diff = np.ones(X.shape)
-it = 0
-max_iter = 100
-
-while np.linalg.norm(diff) > tol and it < max_iter:
-    diff = np.linalg.solve(J(*X), -F(*X))
-    X += diff
-    it += 1
-    print(it, X, np.linalg.norm(diff))
-
-if it == max_iter:
-    print("Max antal iterationer")
-
-
-    
+def f(x):
+    return (x**2 - 1)/((x**2 + 1)*(np.sqrt(x**4 + 1)))
+print(quad_asr(f, -4*np.pi, 4*np.pi, 1e-12))
