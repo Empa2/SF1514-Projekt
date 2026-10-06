@@ -7,6 +7,22 @@ import matplotlib.pyplot as plt
 
 # Euler framåt y_n+1 = y_n + h*f(t_n, y_n)
 
+# Begynnelsevärdesproblem:
+# y = f(t, y), y(t0) = y0
+# 
+# Framåt Euler:
+# y_(n+1)' = y_n + h*f(t_n, y_n)
+# t_(n+1) = t_n + h
+#
+# h - steglängd: (T_slut - T_start) / N
+# N = antal tidssteg
+# Frammåt Euler har noggranhetsordning p = 1
+# 
+# globalt fel: O(h)
+# lokalt fel: O(h^2)
+#
+# p = log(e_h / e_h(h/2)) / log(2)
+
 def f(t, y):
     return 1 + t - y
 
@@ -31,7 +47,7 @@ def y_exact(t):
     return np.exp(-t) + t
 
 t_num, y_num = euler_forward(f, 1, 0.1, np.array([0, 1.2]))
-
+print("error")
 error = abs(y_num[-1] - y_exact(1.2))
 t = np.linspace(0, 1.2, 50)
 plt.plot(t_num, y_num, label = "Euler")
