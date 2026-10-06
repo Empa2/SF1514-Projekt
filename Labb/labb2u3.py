@@ -31,7 +31,7 @@ def diskretisering_temperatur(N, q, k, Ta, Tb):
     v3 = np.ones(N-2)
     A = scipy.sparse.diags_array(
         [v1, v2, v3],
-        offsets=[-1, 0, 1])
+        offsets=[-1, 0, 1]).tocsc()
 
     x = np.linspace(0, L, N+1)
     b = np.ones(N-1)
